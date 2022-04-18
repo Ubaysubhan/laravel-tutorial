@@ -4,26 +4,55 @@
 
 ## Latar belakang topik
 
-Pada unit testing, kita sudah belajar bagaimana cara menguji masing masing komponen secara individu. Namun, bagaimana cara kita menguji aplikasi kita ketika komponennya digabungkan?
+## Latar belakang Unit Testing
 
-Disini masuk **Feature Testing**.
+Dilansir dari [Wikipedia](https://en.wikipedia.org/wiki/Software_testing), Testing pada software dilakukan untuk memberikan informasi kepada stakeholder / developer tentang bagaimana kualitas software yang tengah dikembangkan. Testing dilakukan mencakup proses menjalankan software untuk menemukan kegagalan dan memverifikasi bahwa software itu layak digunakan. Banyak sekali jenis - jenis testing, dirinci sebagai berikut: 
 
-Pada feature testing, kita akan menguji fitur-fitur aplikasi kita.
+Dilihat dari "Pendekatan Testing" :
+
+- Static, Dynamic, Passive Testing
+- Explotary Approach
+- White-box Testing
+- Black-box Testing
+- etc
+
+Jika dilihat dari "Level Testing" :
+
+- Unit Testing
+- Integration Testing
+- System Testing
+- etc
+
+Jika dilihat dari "Teknik Testing" :
+
+- A/B Testing
+- Concurrent Testing
+- Usability Testing
+- End to End Testing
+- etc
+
+Pada *feature testing*, kita akan menguji fitur-fitur aplikasi kita sebagaimana user aktual akan menggunakan fitur tersebut. Pada siklus pengembangan aplikasi sering kali terdapat penambahan fitur, **feature testing* berguna untuk memastikan fitur baru berjalan secara semestinya dan tidak merusak komponen atau fitur lain yang sudah ada sebelumnya.
+*feature testing* pada umumnya menggunakan teknik *end to end testing* dimana test dijalankan secara menyeluruh pada fitur yang dites.
 
 ## Konsep-konsep
 
-Banyak cara untuk menguji fitur dari aplikasi laravel kita, bisa dengan tool dari laravel sendiri, atau dari tool eksternal seperti Postman.
+Banyak cara untuk menguji fitur dari aplikasi laravel kita, bisa dengan tool dari laravel sendiri, atau dari tool eksternal.
 
-Namun, pada topik kali ini, kita hanya akan membicarakan feature testing dengan 2 cara : 
+Pada topik kali ini, kita akan membicarakan feature testing dengan 3 cara :
 
+[Postman Tests](#postman-tests)
 [HTTP Tests](#http-tests) dengan [dokumentasi ini](https://laravel.com/docs/8.x/http-tests)  
 [Browser Tests](#browser-tests) dengan [dokumentasi ini](https://laravel.com/docs/8.x/dusk)
 
 ## Langkah-langkah tutorial
 
+## Postman Tests
+Dengan postman kita bisa menguji HTTP route dan request aplikasi kita.
+
 ## HTTP Tests
 
-HTTP tests adalah cara kita menguji HTTP route dan request aplikasi kita, seperti layaknya menggunakan `Postman`. Namun, pada HTTP test dari Laravel, kita tidak benar-benar mengirim HTTP request lewat jaringan, melainkan keseluruhan jaringan pengiriman disimulasikan dalam internal Laravel.
+HTTP tests adalah cara kita menguji HTTP route dan request aplikasi kita. Tidak seperti jika menggunakan `postman` , pada HTTP test dari Laravel, kita tidak benar-benar mengirim HTTP request lewat jaringan, melainkan keseluruhan jaringan pengiriman disimulasikan dalam internal Laravel.
+
 ### Basic Test
 
 Untuk membuat Feature Testing di Laravel, dapat menggunakan perintah berikut:
