@@ -4,8 +4,6 @@
 
 ## Latar belakang topik
 
-## Latar belakang Unit Testing
-
 Dilansir dari [Wikipedia](https://en.wikipedia.org/wiki/Software_testing), Testing pada software dilakukan untuk memberikan informasi kepada stakeholder / developer tentang bagaimana kualitas software yang tengah dikembangkan. Testing dilakukan mencakup proses menjalankan software untuk menemukan kegagalan dan memverifikasi bahwa software itu layak digunakan. Banyak sekali jenis - jenis testing, dirinci sebagai berikut: 
 
 Dilihat dari "Pendekatan Testing" :
@@ -31,7 +29,7 @@ Jika dilihat dari "Teknik Testing" :
 - End to End Testing
 - etc
 
-Pada *feature testing*, kita akan menguji fitur-fitur aplikasi kita sebagaimana user aktual akan menggunakan fitur tersebut. Pada siklus pengembangan aplikasi sering kali terdapat penambahan fitur, **feature testing* berguna untuk memastikan fitur baru berjalan secara semestinya dan tidak merusak komponen atau fitur lain yang sudah ada sebelumnya.
+Pada *feature testing*, kita akan menguji fitur-fitur aplikasi kita sebagaimana user aktual akan menggunakan fitur tersebut. Pada siklus pengembangan aplikasi sering kali terdapat penambahan fitur, *feature testing* berguna untuk memastikan fitur baru berjalan secara semestinya dan tidak merusak komponen atau fitur lain yang sudah ada sebelumnya.
 *feature testing* pada umumnya menggunakan teknik *end to end testing* dimana test dijalankan secara menyeluruh pada fitur yang dites.
 
 ## Konsep-konsep
