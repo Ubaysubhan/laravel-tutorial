@@ -39,7 +39,9 @@ Banyak cara untuk menguji fitur dari aplikasi laravel kita, bisa dengan tool dar
 Pada topik kali ini, kita akan membicarakan feature testing dengan 3 cara :
 
 [Postman Tests](#postman-tests)
+
 [HTTP Tests](#http-tests) dengan [dokumentasi ini](https://laravel.com/docs/8.x/http-tests)  
+
 [Browser Tests](#browser-tests) dengan [dokumentasi ini](https://laravel.com/docs/8.x/dusk)
 
 ## Langkah-langkah tutorial
@@ -97,16 +99,32 @@ Jika ada kesalahan atau error, cek lagi versi laravel atau lihat [dokumentasi](h
 Laravel menyediakan helper function untuk memudahkan testing HTTP Request dengan session. Developer bisa menggunakan `actingAs` untuk membuat request layaknya dibuat oleh user tertentu.
 
 ```php
-public function test_an_action_that_requires_authentication()
+public function test_users_can_authenticate_using_the_login_screen()
 {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)
-                        ->withSession(['banned' => false])
-                        ->get('/');
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(RouteServiceProvider::HOME);
+}
+
+public function test_users_can_not_authenticate_with_invalid_password()
+{
+    $user = User::factory()->create();
+
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
+
+    $this->assertGuest();
 }
 ```
-Pada contoh ini, user dibuat oleh user factory, dan digunakan untuk membuat request.Request yang diterima akan layaknya dikirim oleh `$user`. Lihat lebih lengkap di [dokumentasi](https://laravel.com/docs/8.x/http-tests#session-and-authentication)
+Pada contoh ini, user dibuat oleh user factory, dan digunakan untuk mengecek apakah authentication berjalan.
 
 ### Test File Upload
 
@@ -130,15 +148,29 @@ public function test_avatars_can_be_uploaded()
 
 Selain menggunakan assertion yang [ada](https://laravel.com/docs/8.x/http-tests#available-assertions), laravel juga menyediakan cara untuk mendebug result & response dari HTTP test dengan men-`dump` mereka.
 ```php
-public function test_basic_test()
+<?php
+ 
+namespace Tests\Feature;
+ 
+use Tests\TestCase;
+ 
+class PostTest extends TestCase
 {
-    $response = $this->get('/');
-
-    $response->dumpHeaders();
-
-    $response->dumpSession();
-
-    $response->dump();
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function test_basic_test()
+    {
+        $response = $this->get('/');
+ 
+        $response->dumpHeaders();
+ 
+        $response->dumpSession();
+ 
+        $response->dump();
+    }
 }
 ```
 ## Browser Tests
