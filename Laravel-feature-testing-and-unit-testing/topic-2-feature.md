@@ -182,6 +182,10 @@ Setelah menginstall dusk, jalankan `dusk:install`
 ```
 php artisan dusk:install
 ```
+Pastikan chrome-driver dan laravel-dusk memiliki versi yang sinkron.
+ketika chrome-driver gagal didownload , kita bisa mendownloadnya dengan menggunakan vpn atau bisa melihat di sini (https://github.com/laravel/dusk/issues/770#issuecomment-625495556)
+
+lalu jalankan ```php artisan dusk:chrome-driver 72```
 
 Jika menggunakan laravel sail, bisa ikuti petunjuk [ini](https://laravel.com/docs/8.x/sail#laravel-dusk) untuk installasi dusk.
 
@@ -189,43 +193,51 @@ Jika perlu enviroment yang berbeda ketika menjalankan dusk, bisa membuat file `.
 
 ### Basic Test
 
-Untuk membuat Browser Test di Laravel, dapat menggunakan perintah berikut:
+Pada saat setelah melakukan ```php artisan dusk:install``` maka akan terbentuk sebuah folder baru yang bernama folder ```browser``` dan sebuah file ```ExampleTest.php```
 
-```bash
-php artisan dusk:make PostTest
+Sebelum membuat sebuah browser Test kita diharuskan untuk menyamakan ```APP_URL``` dengan url yang akan kita gunakan untuk melakukan testing
+
+berikut merupakan contoh dari ```ExampleTest.php``` ,  file yang otomatis muncul ketika melakukan php artisan dusk:install
+
 ```
-
-Lalu masukkan kode dibawah ini didalam file PostTest yang telah dibuat.
-
-```php
 <?php
 
 namespace Tests\Browser;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
-class PostTest extends DuskTestCase
+class ExampleTest extends DuskTestCase
 {
     /**
-     * A Dusk test example.
+     * A basic browser test example.
      *
      * @return void
      */
-    public function testExample()
+    public function testBasicExample()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/post')
-                ->assertSee('Post');
+            $browser->visit('/')
+                    ->assertSee('Laravel');
         });
     }
 }
+
+
 
 ```
 Untuk menjalankan test file ini, dapat menjalankan perintah
 
 ```bash
 php artisan dusk
+```
+dan jika berhasil maka akan mengeluarkan keterangan diantaranya 
+
+``` Time : 00:00:11
+    Memory: 20.00 MB
+
+OK (1 test, 1 assertion)
 ```
 
 ### Advanced Test with navigation and typing
@@ -246,15 +258,17 @@ public function testCreateVisible()
 }
 ```
 
-Disini kita bisa memvisualisasikan apa yang terjadi di test kita. 
+Disini kita bisa memvisualisasikan apa yang terjadi di test kita : 
 
 ```php
 $browser->visit('/post')
 ```
+
 untuk datang ke `APP_URL:APP_PORT/post` untuk mengetahui lebih lanjut cara navigasi bisa cek [ini](https://laravel.com/docs/8.x/dusk#navigation)
 ```php
 ->clickLink('Create post')
 ```
+
 untuk menekan link dengan tulisan `Create post` untuk mengetahui lebih lanjut cara memilih elemen HTML dengan dusk bisa cek [ini](https://laravel.com/docs/8.x/dusk#interacting-with-elements)
 ```php
 ->type('title', "TestCreatePost2")
@@ -299,12 +313,76 @@ public function login(Browser $browser, $username, $password)
             ->press('Create Playlist');
 }
 ```
+
 lalu pada test bisa menggunakan method tersebut dengan
 ```php
 $browser->visit(new Login)
         ->login('user','password')
         ->assertSee('Successfully Login');
 ```
+
+contoh login test:
+
+```php
+public function testLogin(){
+       User::where('name','ubay')->delete();
+        User::create(['name' => 'ubay','email' =>'ubaysubhan@gmail.com','password' => bcrypt('besoklibur')]);
+      $this->browse(function (Browser $browser) {
+       
+          $browser->visit('/')
+               ->clickLink('Login')
+               ->assertSee('E-Mail Address')
+               ->type('email','ubaysubhan@gmail.com')
+               ->type('password','besoklibur')
+               ->press('Login')
+               ->assertSee('You are logged in!');
+        });
+    }
+```
+contoh :
+```php
+User::where('name','ubay')->delete();
+```
+Mencari user dengan nama ubay lalu mendeletenya.
+
+```php
+ User::create(['name' => 'ubay','email' =>'ubaysubhan@gmail.com','password' => bcrypt('besoklibur')]);
+```
+membuat user baru bernama ubay yang berisikan email dan password yang akan digunakan untuk loginTest.
+
+```php
+ $browser->visit('/')
+```
+memerintahkan browser untuk mengunjungi halaman awal laravel
+
+```php
+->clickLink('Login')
+```
+memerintahkan browser untuk mengklik link login yang akan membawa kita ke halaman login
+
+```php
+->assertSee('E-Mail Address')
+```
+mengecek apakah benar kita sudah berada di halaman login dengan mengecek apakah sudah ada text dengan nilai 'email-address'
+untuk melakukan assertion. Untuk list lengkap assertion yang ada bisa melihat di [sini](https://laravel.com/docs/8.x/dusk#available-assertions)
+
+```php
+->type('email','ubaysubhan@gmail.com')
+               ->type('password','besoklibur')
+```
+memerintahkan browser untuk mengetik email dan password di tag masing masing.
+
+```php
+->press('Login')
+```
+memerintahkan browser mengklik tombol login di form login
+
+```php
+->assertSee('You are logged in!');
+```
+lalu kita cek apakah loginnya berhasil atau tidak. dengan cara mengecek apakah di halaman itu ada text dengan tulisan You are logged in!
+
+
 
 ### Laravel Dusk Component
 Laravel dusk memiliki fitur `Component` yang dapat digunakan untuk komponen UI yang muncul di beberapa tempat di aplikasi, oleh karena itu tidak memiliki URL tertentu.
@@ -351,12 +429,4 @@ public function testBasicExample()
     });
 }
 ```
-
-### Laravel Dusk Continous Integration
-
-Untuk menjalankan dusk tests dengan framework CI yang kalian mau, bisa cek tutorial terbaru di [dokumentasi](https://laravel.com/docs/8.x/dusk#continuous-integration)
-
-
-
-
 
