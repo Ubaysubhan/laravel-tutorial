@@ -126,21 +126,15 @@ public function test_users_can_not_authenticate_with_invalid_password()
 ```
 Pada contoh ini, user dibuat oleh user factory, dan digunakan untuk mengecek apakah authentication berjalan.
 
-### Test File Upload
+### Test View
 
-Laravel menyediakan `Illuminate\Http\UploadedFile` menyediakan method `fake` untuk membuat dummy file atau image untuk testing. Hal ini, digabungkan dengan method `fake` facade `Storage`, sangat mempermudah testing upload file.
+Kita bisa menlakukan pengetesan apakah *View* yang ada menampilkan komponen tertentu, memanfaatkan *Assertions* assertSee()
 ```php
-public function test_avatars_can_be_uploaded()
+public function test_a_welcome_view_can_be_rendered()
 {
-    Storage::fake('avatars');
+    $view = $this->view('welcome');
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
-
-    $response = $this->post('/avatar', [
-        'avatar' => $file,
-    ]);
-
-    Storage::disk('avatars')->assertExists($file->hashName());
+    $view->assertSee('login');
 }
 ```
 
