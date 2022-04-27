@@ -96,7 +96,7 @@ php artisan test
 Jika ada kesalahan atau error, cek lagi versi laravel atau lihat [dokumentasi](https://laravel.com/docs/8.x/http-tests)
 ### HTTP Authentication
 
-Laravel menyediakan helper function untuk memudahkan testing HTTP Request dengan session. Developer bisa menggunakan `actingAs` untuk membuat request layaknya dibuat oleh user tertentu.
+Untuk melakukan pengetesan bahwa fitur *Authentication* berjalan dengan baik, kita bisa melakukan pengecekan dalam kondisi password yang valid maupun tidak. Sehingga kita bisa mengetahui apakah fitur tersebut berjalan dengan baik.
 
 ```php
 public function test_users_can_authenticate_using_the_login_screen()
